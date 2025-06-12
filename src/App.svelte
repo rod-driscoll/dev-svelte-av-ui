@@ -200,6 +200,10 @@
 {#if blackout}  
   <div 
     on:click={() => blackout = false}
+    on:keydown={(e) => e.key === 'Enter' && (blackout = false)}
+    role="button"
+    tabindex="0"
+    aria-label="Click to exit blackout mode"
     style="
       z-index: 99;
       position: fixed;

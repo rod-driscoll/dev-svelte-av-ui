@@ -5,5 +5,20 @@ import { svelte } from '@sveltejs/vite-plugin-svelte'
 export default defineConfig({
   base: './',
   plugins: [svelte()],
-  build: {outDir: './build'}
+  build: {
+    rollupOptions: {
+      input: {
+        main: './index.html',
+      },
+      external: [
+        './js/svg-inject.js',
+        './js/hls.js',
+        './js/jsmpeg.min.js',
+        './sw.js',
+        './pwa/sw-start.js'
+      ]
+    }
+  },
+  // Ensure these files are treated as public assets
+  publicDir: 'public'
 })

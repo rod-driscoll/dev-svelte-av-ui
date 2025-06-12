@@ -31,6 +31,12 @@
   on:click={close}
   on:pointerup={() => clearTimeout(timeout)}
   on:pointerdown={() => timeout = setTimeout(() => location.reload(true), 1000)}
+  on:keydown={(e) => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        timeout = setTimeout(() => location.reload(true), 1000);
+        clearTimeout(timeout);
+      }
+    }}
   class="fixed"
   style="background-color: {config.backgroundColor};"
 >
