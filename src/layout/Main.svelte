@@ -13,12 +13,14 @@
   // Function
   function getSubpageFiles(hasSubpages, activePageConfig) {
     if (hasSubpages) {
+      console.log("Main.svelte getSubpageFiles");
       let subpages = {}
       activePageConfig.subpages.forEach(subpage => {
         let subpageFile = pageFiles[$global.config.pages[subpage]?.file] ?? pageFiles["MissingPage"]
         subpages[subpage] = subpageFile
         let subpageSubpages = $global.config.pages[subpage]?.subpages
         if (subpageSubpages) subpages[subpage].subpages = subpageSubpages
+        console.log("Main.svelte getSubpageFiles: ", subpage);
       });
       return subpages
     }
@@ -27,7 +29,7 @@
 
   // Dynamic Variables
   let editMode = $global.url.search.edit === "true"
-  $: hasSubpages = activePageConfig.hasOwnProperty('subpages')
+  $: hasSubpages = actConfig.hasOwnProperty('subpages')
   $: activeSubpageName = hasSubpages ? activePageConfig.subpages[0] : ""
   $: activeSubpageConfig = $global.config.pages[activeSubpageName]
   $: activeSubpageFiles = getSubpageFiles(hasSubpages, activePageConfig)
@@ -41,6 +43,7 @@
 
 <!-- HTML -->
 {#if hasSubpages}
+  {console.log("rendering Main.svelte")}
 
   <!-- Nav and Subpages -->
   <nav>
@@ -57,6 +60,8 @@
   
   {#each activePageConfig.subpages as subpage}
     {#if activeSubpageFiles[subpage].subpages && activeSubpageName === subpage}
+      {console.log("rendering Main.svelte subpage: ", subpage)}
+
       <svelte:self 
         pageFiles={pageFiles}
         activePageFile={pageFiles[$global.config.pages[subpage]?.file] || pageFiles["MissingPage"]}
@@ -84,7 +89,7 @@
 
 {/if}
 
-<!-- CSS -->
+<!-- CSS -->ivePage
 <style>
   nav {
     display: flex;

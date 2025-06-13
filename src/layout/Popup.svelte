@@ -23,10 +23,12 @@
   }
   function getSubpageFiles(hasSubpages, activePopupConfig) {
     if (hasSubpages) {
+      console.log("Popup.svelte getSubpageFiles");
       let subpages = {}
       activePopupConfig.subpages.forEach(subpage => {
         let subpageFile = pageFiles[$global.config.pages[subpage]?.file] ?? pageFiles["MissingPage"]
         subpages[subpage] = subpageFile
+        console.log("Popup.svelte getSubpageFiles: ", subpage);
       });
       return subpages
     }

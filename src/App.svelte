@@ -215,7 +215,7 @@
 {#if renderReady}
   {#key config}
     <div class="body" in:fade={{duration: timePassed ? 0 : fadeTime}} >
-      {#if popup !== ""}
+      {#if popup && $global.config.pages[popup]}
         <Popup 
           pageFiles={pageFiles}
           activePopupFile={pageFiles[$global.config.pages[popup]?.file] || pageFiles["MissingPage"]}
