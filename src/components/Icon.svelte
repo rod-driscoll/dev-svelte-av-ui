@@ -1,3 +1,5 @@
+<!-- @migration-task Error while migrating Svelte code: Event attribute must be a JavaScript expression, not a string
+https://svelte.dev/e/attribute_invalid_event_handler -->
 <!-- Examples
 <Icon name="add_circle-fill" color='red'/>
 <Icon svgPath="/svgs/font_awesome/comment.svg" size=2 />

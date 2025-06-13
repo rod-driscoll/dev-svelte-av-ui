@@ -1,5 +1,7 @@
 <!-- Javascript -->
 <script>
+  import { run } from 'svelte/legacy';
+
 
   // Imports
   import { global } from '../js/global.js';
@@ -10,8 +12,14 @@
   import Loading from '../components/Loading.svelte'
   import CardPower from '../components/CardToggle.svelte'
 
-  // Configuration
-  export let config = {
+  
+  /**
+   * @typedef {Object} Props
+   * @property {any} [config] - Configuration
+   */
+
+  /** @type {Props} */
+  let { config = {
     "name": "Device Power",
     "file": "TogglePage",
     "cardWidth": "500px",
@@ -38,12 +46,12 @@
         }
       }
     ]
-  }
+  } } = $props();
 
   // Variables
   let editMode = $global.url.search.edit === "true"
   let cardWidth = config.cardWidth
-  let toggles = config.toggles
+  let toggles = $state(config.toggles)
 
   // Functions
   function onPress(device) {
@@ -69,7 +77,9 @@
   })
 
   // Debug
-  $: console.log("DevicePowerPage config", config)
+  run(() => {
+    console.log("DevicePowerPage config", config)
+  });
 
 </script>
 

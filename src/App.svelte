@@ -1,5 +1,7 @@
 <!-- Javascript -->
 <script>
+  import { run } from 'svelte/legacy';
+
 
   // Stores
   import { global, getJSON, getConfigFileName, getUrlSearchs, getUrlHash } from './js/global.js'
@@ -167,24 +169,32 @@
   }
   
   // Connecting to server...
-  let dots = "."
+  let dots = $state(".")
   setInterval(() => dots.length > 5 ? dots = "." : dots += ".", 500);
-  let timePassed = false;
+  let timePassed = $state(false);
   const fadeTime = 1000
   setTimeout(() => timePassed = true, fadeTime);
 
   // Dynamic css classes
-  $: document.querySelector("body").classList = $global.config?.client?.theme || "dark"
-  $: document.documentElement.classList = `rotate${$global.config?.client?.rotate}` || ""
-  $: document.documentElement.style.fontSize = $global.screen?.width < 550 ? `${$global.config?.client?.scaleMobile*14}px` || "14px" : `${$global.config?.client?.scale*20}px` || "20px"
+  run(() => {
+    document.querySelector("body").classList = $global.config?.client?.theme || "dark"
+  });
+  run(() => {
+    document.documentElement.classList = `rotate${$global.config?.client?.rotate}` || ""
+  });
+  run(() => {
+    document.documentElement.style.fontSize = $global.screen?.width < 550 ? `${$global.config?.client?.scaleMobile*14}px` || "14px" : `${$global.config?.client?.scale*20}px` || "20px"
+  });
   
   // Redraw / Render conditions
-  $: renderReady = $global.config?.pages && (!$global.config.server.online || $ws.status === "open")
-  $: timePassed = $ws?.status !== "open"
-  let blackout = false
-  let page = $global?.router?.page
-  let popup = $global?.router?.popup
-  let config = $global?.config
+  let renderReady = $derived($global.config?.pages && (!$global.config.server.online || $ws.status === "open"))
+  run(() => {
+    timePassed = $ws?.status !== "open"
+  });
+  let blackout = $state(false)
+  let page = $state($global?.router?.page)
+  let popup = $state($global?.router?.popup)
+  let config = $state($global?.config)
   global.subscribe(g => {
     if (page !== g.router?.page) page = g.router.page
     if (popup !== g.router?.popup) popup = g.router.popup
@@ -192,14 +202,16 @@
   })
 
   // Debug
-  $: $global?.url ? console.log("global", $global) : ""
+  run(() => {
+    $global?.url ? console.log("global", $global) : ""
+  });
 
 </script>
 
 <!-- Blackout -->
 {#if blackout}  
   <div 
-    on:click={() => blackout = false}
+    onclick={() => blackout = false}
     style="
       z-index: 99;
       position: fixed;
@@ -239,7 +251,7 @@
     <h4>Connecting to server{dots}</h4>
     <div>
       <button style="background-color: var(--color-bg-secondary);"
-        on:click={() => location.reload(true)}
+        onclick={() => location.reload(true)}
       >Reload?</button>
     </div>
   </div>

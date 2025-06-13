@@ -5,9 +5,9 @@
   import Icon from './Icon.svelte'
 
   // Variables
-  let timeout
+  let timeout = $state()
   let clearTimeout_sec = 1
-  let number = ""
+  let number = $state("")
 
   // Functions
   function printNumber(num) {
@@ -29,7 +29,7 @@
   }
 
   // Dynamic Variables
-  $: numberString = printNumber(number)
+  let numberString = $derived(printNumber(number))
 
 </script>
 
@@ -41,11 +41,11 @@
     <h2>{numberString}</h2>
     {#if number !== ""}      
       <button class="back"
-        on:pointerup={ () => {
+        onpointerup={() => {
           clearTimeout(timeout)
           number = number.slice(0, -1)
         }}
-        on:pointerdown={ () => {
+        onpointerdown={() => {
           timeout = setTimeout(() => {
             number = ""
           }, clearTimeout_sec * 1000)
@@ -59,70 +59,70 @@
   <!-- Keypad -->
   <div class="grid3x3">
   
-    <button on:click={() => numberPress('1')}> 
+    <button onclick={() => numberPress('1')}> 
       <div>
         <span>1</span>
         <span></span>
       </div>
     </button>
-    <button on:click={() => numberPress('2')}> 
+    <button onclick={() => numberPress('2')}> 
       <div>
         <span>2</span>
         <span>ABC</span>
       </div>
     </button>
-    <button on:click={() => numberPress('3')}> 
+    <button onclick={() => numberPress('3')}> 
       <div>
         <span>3</span>
         <span>DEF</span>
       </div>
     </button>
   
-    <button on:click={() => numberPress('4')}> 
+    <button onclick={() => numberPress('4')}> 
       <div>
         <span>4</span>
         <span>GHI</span>
       </div>
     </button>
-    <button on:click={() => numberPress('5')}> 
+    <button onclick={() => numberPress('5')}> 
       <div>
         <span>5</span>
         <span>JKL</span>
       </div>
     </button>
-    <button on:click={() => numberPress('6')}> 
+    <button onclick={() => numberPress('6')}> 
       <div>
         <span>6</span>
         <span>MNO</span>
       </div>
     </button>
   
-    <button on:click={() => numberPress('7')}> 
+    <button onclick={() => numberPress('7')}> 
       <div>
         <span>7</span>
         <span>PQRS</span>
       </div>
     </button>
-    <button on:click={() => numberPress('8')}> 
+    <button onclick={() => numberPress('8')}> 
       <div>
         <span>8</span>
         <span>TUV</span>
       </div>
     </button>
-    <button on:click={() => numberPress('9')}> 
+    <button onclick={() => numberPress('9')}> 
       <div>
         <span>9</span>
         <span>WXYZ</span>
       </div>
     </button>
     
-    <button on:click={() => numberPress('0')}> 
+    <button onclick={() => numberPress('0')}> 
       <div>
         <span>0</span>
         <span></span>
       </div>
     </button>
-    <button class="enter" on:click={enterPress}>
+    <button class="enter" onclick={enterPress}>
       <Icon name="check"/>
     </button>
   

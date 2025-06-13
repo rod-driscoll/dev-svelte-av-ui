@@ -4,10 +4,10 @@
 
   // Stores
   import { global } from '../js/global.js';
-  export let config = {
+  let { config = $bindable({
     "name": "Configuration Edit",
     "file": "ConfigPage"
-  }
+  }) } = $props();
   config = config
 
   // Functions
@@ -45,27 +45,27 @@
   
   // Variables
   let text = ""
-  let obj = $global.config
-  let badConfig = false
-  $: html = formatHighlight(obj)
+  let obj = $state($global.config)
+  let badConfig = $state(false)
+  let html = $derived(formatHighlight(obj))
 
 </script>
 
 <!-- HTML -->
 <section>
   <div>
-    <button on:click={reload}>Reload</button>
-    <button on:click={format}>Format</button>
-    <button on:click={use} class="right">Live</button>
+    <button onclick={reload}>Reload</button>
+    <button onclick={format}>Format</button>
+    <button onclick={use} class="right">Live</button>
     <!-- <button on:click={save}>Save</button> -->
-    <button on:click={save} disabled>Save</button>
+    <button onclick={save} disabled>Save</button>
   </div>
   <code
     contenteditable
     spellcheck="false"
     class:bad={badConfig}
     role="textbox"
-    on:input={read}
+    oninput={read}
   >
     {@html html}
   </code>

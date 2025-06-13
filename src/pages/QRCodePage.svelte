@@ -1,12 +1,20 @@
 <!-- Javascript -->
 <script>
+  import { run } from 'svelte/legacy';
+
 
   // Stores
   import { onMount } from 'svelte';
   import { default as QrCode } from 'qrious';
 
-  // Configuration
-  export let config = {
+  
+  /**
+   * @typedef {Object} Props
+   * @property {any} [config] - Configuration
+   */
+
+  /** @type {Props} */
+  let { config = {
     "name": "Stream",
     "file": "StreamPage",
     "heading": "",
@@ -17,16 +25,16 @@
       "password": "",
       "hidden": false,
     }
-  }
+  } } = $props();
   
   // Variables
   let heading = config.heading
-  let url = config.url
+  let url = $state(config.url)
   let wifi = config.wifi
   if (wifi && wifi.ssid !== "") url = `WIFI:T:${wifi.auth};S:${wifi.ssid};P:${wifi.password};H:${wifi.hidden};;`
   
   // Functions
-  let qrCodeImage = ''
+  let qrCodeImage = $state('')
   const QRcode = new QrCode()
   function generateQrCode() {
     QRcode.set({
@@ -41,10 +49,14 @@
   }
 
   // Dynamic Variables
-  $: if (url) generateQrCode()
+  run(() => {
+    if (url) generateQrCode()
+  });
   
   // Debug
-  $: console.log("config", config)
+  run(() => {
+    console.log("config", config)
+  });
   
 </script>
 

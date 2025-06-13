@@ -1,15 +1,23 @@
 <!-- Javascript -->
 <script>
+  import { run } from 'svelte/legacy';
+
 
   // Stores
   import { global } from '../js/global.js';
 
-  // Configuration
-  export let config = {
+  
+  /**
+   * @typedef {Object} Props
+   * @property {any} [config] - Configuration
+   */
+
+  /** @type {Props} */
+  let { config = {
     "name": "YouTube",
     "file": "UrlEmbedPage",
     "url": "https://www.google.com/"
-  }
+  } } = $props();
 
   // Components
   // import Keypad from '../components/Keypad.svelte'
@@ -18,7 +26,9 @@
   let url = config.url
 
   // Debug
-  $: console.log("config", config)
+  run(() => {
+    console.log("config", config)
+  });
 
 </script>
 

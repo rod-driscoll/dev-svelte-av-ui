@@ -4,10 +4,10 @@
 
   // Stores
   import { global } from '../js/global.js';
-  export let config = {
+  let { config = $bindable({
     "name": "Missing Page",
     "file": "MissingPage"
-  }
+  }) } = $props();
   config = config
 </script>  
   

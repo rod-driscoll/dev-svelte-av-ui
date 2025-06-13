@@ -7,21 +7,21 @@
 <!-- HTML -->
 <div class="grid3x3">
 
-  <button on:click={() => {dispatch('press', '1')}}>1</button>
-  <button on:click={() => {dispatch('press', '2')}}>2</button>
-  <button on:click={() => {dispatch('press', '3')}}>3</button>
+  <button onclick={() => {dispatch('press', '1')}}>1</button>
+  <button onclick={() => {dispatch('press', '2')}}>2</button>
+  <button onclick={() => {dispatch('press', '3')}}>3</button>
 
-  <button on:click={() => {dispatch('press', '4')}}>4</button>
-  <button on:click={() => {dispatch('press', '5')}}>5</button>
-  <button on:click={() => {dispatch('press', '6')}}>6</button>
+  <button onclick={() => {dispatch('press', '4')}}>4</button>
+  <button onclick={() => {dispatch('press', '5')}}>5</button>
+  <button onclick={() => {dispatch('press', '6')}}>6</button>
 
-  <button on:click={() => {dispatch('press', '7')}}>7</button>
-  <button on:click={() => {dispatch('press', '8')}}>8</button>
-  <button on:click={() => {dispatch('press', '9')}}>9</button>
+  <button onclick={() => {dispatch('press', '7')}}>7</button>
+  <button onclick={() => {dispatch('press', '8')}}>8</button>
+  <button onclick={() => {dispatch('press', '9')}}>9</button>
 
-  <button on:click={() => {dispatch('press', '*')}}>*</button>
-  <button on:click={() => {dispatch('press', '0')}}>0</button>
-  <button on:click={() => {dispatch('press', '#')}}>#</button>
+  <button onclick={() => {dispatch('press', '*')}}>*</button>
+  <button onclick={() => {dispatch('press', '0')}}>0</button>
+  <button onclick={() => {dispatch('press', '#')}}>#</button>
 
 </div>
 

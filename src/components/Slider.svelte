@@ -1,27 +1,43 @@
 <!-- Javascript -->
-<script context="module">
+<script module>
   let counter = 0
 </script>
 <script>
+  import { createBubbler } from 'svelte/legacy';
+
+  const bubble = createBubbler();
 
   // Event Dispatcher
   import { createEventDispatcher } from 'svelte';
   const dispatch = createEventDispatcher();
 
-  // Exports
-  export let label = ""
-  export let value = 50
-  export let max = 100
-  export let min = 0
-  export let units = "%"
-  export let disabled = false
+  
+  /**
+   * @typedef {Object} Props
+   * @property {string} [label] - Exports
+   * @property {number} [value]
+   * @property {number} [max]
+   * @property {number} [min]
+   * @property {string} [units]
+   * @property {boolean} [disabled]
+   */
+
+  /** @type {Props} */
+  let {
+    label = "",
+    value = $bindable(50),
+    max = 100,
+    min = 0,
+    units = "%",
+    disabled = false
+  } = $props();
 
   // Variables
   let id = "slider_" + counter++;
 
   // Dynamic Variables
-  $: percent = ((value - min) / (max - min)) * 100;
-  $: background = `linear-gradient(to right, var(--color-bg-primary) 0% ${percent}%, var(--color-bg-secondary) ${percent}% 100%)`
+  let percent = $derived(((value - min) / (max - min)) * 100);
+  let background = $derived(`linear-gradient(to right, var(--color-bg-primary) 0% ${percent}%, var(--color-bg-secondary) ${percent}% 100%)`)
 
 </script>
 
@@ -43,7 +59,7 @@
     disabled={disabled}
     style="background: {background}"
     bind:value={value}
-    on:input
+    oninput={bubble('input')}
   >
 </div>
 

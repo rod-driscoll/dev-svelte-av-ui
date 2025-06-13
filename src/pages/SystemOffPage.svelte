@@ -4,18 +4,7 @@
   // Stores
   import { global } from '../js/global.js';
 
-  // Configuration
-  export let config = {
-    "name": "System Off",
-    "file": "SystemOffPage",
-    "offList": [
-      "Power down all Displays & Projectors",
-      "Mute the Microphones and Speakers",
-      "Lock out the Touch Panel"
-    ],
-    "offTimer_sec": 30,
-    "offPage": "home"
-  }
+  
 
   // Variables
   let offPage = config.offPage
@@ -25,6 +14,23 @@
 
   // Websocket
   import { ws } from '../js/simpl-ws'
+  /**
+   * @typedef {Object} Props
+   * @property {any} [config] - Configuration
+   */
+
+  /** @type {Props} */
+  let { config = {
+    "name": "System Off",
+    "file": "SystemOffPage",
+    "offList": [
+      "Power down all Displays & Projectors",
+      "Mute the Microphones and Speakers",
+      "Lock out the Touch Panel"
+    ],
+    "offTimer_sec": 30,
+    "offPage": "home"
+  } } = $props();
   let wsSub = config.simplSubscriptionID ?? "TouchPanel"
   ws.addSubscription(wsSub, () => {})
 
@@ -50,8 +56,8 @@
     {/each}
   </ol>
   <div>
-    <button class="confirm" on:click={powerOff}>Confirm</button>
-    <button class="cancel"  on:click={close}>Cancel</button>
+    <button class="confirm" onclick={powerOff}>Confirm</button>
+    <button class="cancel"  onclick={close}>Cancel</button>
   </div>
 </section>
 

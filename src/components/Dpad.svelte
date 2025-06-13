@@ -4,20 +4,19 @@
   import { createEventDispatcher } from 'svelte';
   const dispatch = createEventDispatcher();
 
-  export let bottomLeft = {
+  let { bottomLeft = {
     "show": false,
     "label": "",
     "icon": "home",
     "state": false,
     "toggle": false,
-  }
-  export let bottomRight = {
+  }, bottomRight = {
     "show": false,
     "label": "",
     "icon": "auto_mode",
     "state": false,
     "toggle": false,
-  }
+  } } = $props();
   let iconSize = 2.5
 </script>
 
@@ -25,45 +24,45 @@
 <div class="grid3x3">
 
   <button 
-    on:pointerup={() => dispatch('up', 'in') }
-    on:pointerout={() => dispatch('up', 'in') }
-    on:pointerdown={() => dispatch('down', 'in') }
+    onpointerup={() => dispatch('up', 'in')}
+    onpointerout={() => dispatch('up', 'in')}
+    onpointerdown={() => dispatch('down', 'in')}
   >
     <Icon name="add" size={iconSize}/>
   </button>
   <button class="up"
-    on:pointerup={() => dispatch('up', 'up') } 
-    on:pointerout={() => dispatch('up', 'up') } 
-    on:pointerdown={() => dispatch('down', 'up') } 
+    onpointerup={() => dispatch('up', 'up')} 
+    onpointerout={() => dispatch('up', 'up')} 
+    onpointerdown={() => dispatch('down', 'up')} 
   >
     <Icon name="expand_less" size={iconSize}/>
   </button>
   <button 
-    on:pointerup={() => dispatch('up', 'out') }
-    on:pointerout={() => dispatch('up', 'out') }
-    on:pointerdown={() => dispatch('down', 'out') }
+    onpointerup={() => dispatch('up', 'out')}
+    onpointerout={() => dispatch('up', 'out')}
+    onpointerdown={() => dispatch('down', 'out')}
   >
     <Icon name="remove" size={iconSize}/>
   </button>
   
   <button class="left"
-    on:pointerup={() => dispatch('up', 'left') } 
-    on:pointerout={() => dispatch('up', 'left') } 
-    on:pointerdown={() => dispatch('down', 'left') } 
+    onpointerup={() => dispatch('up', 'left')} 
+    onpointerout={() => dispatch('up', 'left')} 
+    onpointerdown={() => dispatch('down', 'left')} 
   >
     <Icon name="chevron_left" size={iconSize}/>
   </button>
   <div class="center"
-    on:pointerup={() => dispatch('up', 'center') } 
-    on:pointerout={() => dispatch('up', 'center') } 
-    on:pointerdown={() => dispatch('down', 'center') } 
+    onpointerup={() => dispatch('up', 'center')} 
+    onpointerout={() => dispatch('up', 'center')} 
+    onpointerdown={() => dispatch('down', 'center')} 
   >
     <Icon name="" size=1/>
   </div>
   <button class="right"
-    on:pointerup={() => dispatch('up', 'right') }
-    on:pointerout={() => dispatch('up', 'right') }
-    on:pointerdown={() => dispatch('down', 'right') }
+    onpointerup={() => dispatch('up', 'right')}
+    onpointerout={() => dispatch('up', 'right')}
+    onpointerdown={() => dispatch('down', 'right')}
   >
     <Icon name="chevron_right" size={iconSize}/>
   </button>
@@ -71,9 +70,9 @@
   {#if bottomLeft.show}
     <button
       class:on={bottomLeft.state && bottomLeft.toggle}
-      on:pointerup={() => dispatch('up', 'bottomLeft') }
-      on:pointerout={() => dispatch('up', 'bottomLeft') }
-      on:pointerdown={() => dispatch('down', 'bottomLeft') }
+      onpointerup={() => dispatch('up', 'bottomLeft')}
+      onpointerout={() => dispatch('up', 'bottomLeft')}
+      onpointerdown={() => dispatch('down', 'bottomLeft')}
     >
       <Icon name={bottomLeft.icon} size={iconSize}/>
       <small>{bottomLeft.label ?? ""}</small>
@@ -82,18 +81,18 @@
     <div></div>
   {/if}
   <button class="down"
-    on:pointerup={() => dispatch('up', 'down') }
-    on:pointerout={() => dispatch('up', 'down') }
-    on:pointerdown={() => dispatch('down', 'down') }
+    onpointerup={() => dispatch('up', 'down')}
+    onpointerout={() => dispatch('up', 'down')}
+    onpointerdown={() => dispatch('down', 'down')}
   >
     <Icon name="expand_more" size={iconSize}/>
   </button>
   {#if bottomRight.show}
     <button 
       class:on={bottomRight.state && bottomRight.toggle}
-      on:pointerup={() => dispatch('up', 'bottomRight') }
-      on:pointerout={() => dispatch('up', 'bottomRight') }
-      on:pointerdown={() => dispatch('down', 'bottomRight') }
+      onpointerup={() => dispatch('up', 'bottomRight')}
+      onpointerout={() => dispatch('up', 'bottomRight')}
+      onpointerdown={() => dispatch('down', 'bottomRight')}
     >
       <Icon name={bottomRight.icon} size={iconSize}/>
       <small>{bottomRight.label ?? ""}</small>

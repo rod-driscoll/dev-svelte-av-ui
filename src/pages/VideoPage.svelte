@@ -1,5 +1,7 @@
 <!-- Javascript -->
 <script>
+  import { run } from 'svelte/legacy';
+
 
   // Imports
   import { global } from '../js/global.js';
@@ -9,8 +11,14 @@
   import Icon from '../components/Icon.svelte'
   import Loading from '../components/Loading.svelte'
 
-  // Configuration
-  export let config = {
+  
+  /**
+   * @typedef {Object} Props
+   * @property {any} [config] - Configuration
+   */
+
+  /** @type {Props} */
+  let { config = {
     "name": "Video",
     "file": "VideoPage",
     "simplSubscriptionID": "VideoPage",
@@ -93,25 +101,25 @@
         "name": "Display 9"
       }
     ]
-  }
+  } } = $props();
 
   // Variables
   const iconSize = 2
   const noInput = { "id": 999, "name": "Fake Input", "icon": "error" }
   let editMode = $global.url.search.edit === "true"
-  let advancedRouting = config.advancedRouting
+  let advancedRouting = $state(config.advancedRouting)
   let advancedOption = config.advancedOption
   let inputs = config.inputs
-  let outputs = config.outputs
+  let outputs = $state(config.outputs)
   let inputHeading = config.inputHeading ?? "Select source..."
   let outputHeading = config.outputHeading ?? "Then destination..."
-  let inputSelected = inputs[0]
+  let inputSelected = $state(inputs[0])
   let updateId = 0
   outputs.forEach(output => output.input = inputSelected);
 
   // Dynamic Variables
-  $: inputColumns = $global.screen.width > 550 ? config.inputColumns || "auto" : 1
-  $: outputColumns = $global.screen.width > 550 ? config.outputColumns || "auto" : 1
+  let inputColumns = $derived($global.screen.width > 550 ? config.inputColumns || "auto" : 1)
+  let outputColumns = $derived($global.screen.width > 550 ? config.outputColumns || "auto" : 1)
 
   // Functions
   function inputSelect(input) {
@@ -164,9 +172,13 @@
   })
 
   // Debug
-  $: console.log("config", config)
+  run(() => {
+    console.log("config", config)
+  });
   // $: console.log("inputSelected", inputSelected)
-  $: console.log("advancedRouting", advancedRouting)
+  run(() => {
+    console.log("advancedRouting", advancedRouting)
+  });
   // $: console.log("outputs", outputs)
 
 </script>
@@ -184,7 +196,7 @@
     >
       {#each inputs as input}        
         <button 
-          on:click={() => inputSelect(input)}
+          onclick={() => inputSelect(input)}
           class:selected={inputSelected?.id === input.id}
         >
           <Icon name={input.icon} size={iconSize} />
@@ -204,7 +216,7 @@
       >
         {#each outputs as output}      
           {#key output}
-            <button on:click={() => outputSelect(output)} class="tv">
+            <button onclick={() => outputSelect(output)} class="tv">
               <span>{output.name} {editMode ? `[${output.id}]` : ""}</span>
               <div>
                 <Icon name={output.input?.icon} size={iconSize} />
@@ -219,7 +231,7 @@
 
   <!-- Advanced Routing Toggle -->
   {#if advancedOption}
-    <button class="extraButton" on:click={advancedToggle}>
+    <button class="extraButton" onclick={advancedToggle}>
       {advancedRouting ? "Simple" : "Advanced"}
       <Icon name="display_settings" size={iconSize}/>
     </button>

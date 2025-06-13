@@ -5,24 +5,35 @@
   // Import Components
   import Icon from '../components/Icon.svelte'
 
-  // Export
-  export let state = false
-  export let name = "Toggle"
-  export let onButton = {
+  
+
+  // Functions
+  import { createEventDispatcher } from 'svelte';
+  /**
+   * @typedef {Object} Props
+   * @property {boolean} [state] - Export
+   * @property {string} [name]
+   * @property {any} [onButton]
+   * @property {any} [offButton]
+   */
+
+  /** @type {Props} */
+  let {
+    state = false,
+    name = "Toggle",
+    onButton = {
     icon: "circle",
     label: "ON",
     activeLabel: "ON",
     color: "green"
-  }
-  export let offButton = {
+  },
+    offButton = {
     icon: "square",
     label: "OFF",
     activeLabel: "OFF",
     color: "red"
   }
-
-  // Functions
-  import { createEventDispatcher } from 'svelte';
+  } = $props();
   const dispatch = createEventDispatcher();
 
 </script>
@@ -32,7 +43,7 @@
   <h6>{name}</h6>
   <span>
     <button
-      on:click={() => dispatch('onPress')}
+      onclick={() => dispatch('onPress')}
       style="
         border-color: {state ? `var(--color-bg-${onButton.color ?? "green"})` : ""};
         background-color: {state ? `var(--color-bg-${onButton.color ?? "green"})` : ""};
@@ -43,7 +54,7 @@
       {state ? onButton.activeLabel ?? onButton.label : onButton.label ?? ""}
     </button>
     <button
-      on:click={() => dispatch('offPress')}
+      onclick={() => dispatch('offPress')}
       style="
         border-color: {!state ? `var(--color-bg-${offButton.color ?? "red"})` : ""};
         background-color: {!state ? `var(--color-bg-${offButton.color ?? "red"})` : ""};

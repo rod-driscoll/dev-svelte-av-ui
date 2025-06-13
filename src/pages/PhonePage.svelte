@@ -4,15 +4,21 @@
   // Stores
   import { global } from '../js/global.js';
 
-  // Configuration
-  export let config = {
-    "name": "Phone",
-    "placeholder": "405-123-4567"
-  }
+  
 
   // Components
   import Icon from '../components/Icon.svelte'
   import Numpad from '../components/Numpad.svelte'
+  /**
+   * @typedef {Object} Props
+   * @property {any} [config] - Configuration
+   */
+
+  /** @type {Props} */
+  let { config = {
+    "name": "Phone",
+    "placeholder": "405-123-4567"
+  } } = $props();
 
   // Functions
   function printNumber(num) {
@@ -27,13 +33,13 @@
   }
 
   // Variables
-  let timeout
+  let timeout = $state()
   let clearTimeout_sec = 1
-  let inCall = false
-  let number = ""
-  let dtmf = ""
+  let inCall = $state(false)
+  let number = $state("")
+  let dtmf = $state("")
   let placeholder = config.placeholder || "123-456-6789"
-  $: numberString = printNumber(number)
+  let numberString = $derived(printNumber(number))
 
 </script>
 
@@ -41,7 +47,7 @@
 <section>
   <div>
     <div class="number">
-      {#if inCall }
+      {#if inCall}
         <div style="margin-right: auto;">
           <h2 class="smallNum">{numberString}</h2>
           <h2 class="dtmf"><pre>{dtmf} </pre></h2>
@@ -50,11 +56,11 @@
       {:else if number.length > 0}
         <h2>{numberString}</h2>
         <button class="back"
-          on:pointerup={ () => {
+          onpointerup={() => {
             clearTimeout(timeout)
             number = number.slice(0, -1)
           }}
-          on:pointerdown={ () => {
+          onpointerdown={() => {
             timeout = setTimeout(() => {
               number = ""
               dtmf = ""
@@ -79,7 +85,7 @@
       {#if inCall}     
         <button 
           class="end"
-          on:click={() => {
+          onclick={() => {
             inCall = false
           }}
         >
@@ -89,7 +95,7 @@
       {:else}
         <button 
           class="call"
-          on:click={() => {
+          onclick={() => {
             dtmf = ""
             inCall = true
           }}

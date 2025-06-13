@@ -1,22 +1,30 @@
 <!-- Javascript -->
 <script>
+  import { run } from 'svelte/legacy';
+
 
   // Stores
   import { global } from '../js/global.js';
   import { onMount } from 'svelte';
 
-  // Configuration
-  export let config = {
+  
+  /**
+   * @typedef {Object} Props
+   * @property {any} [config] - Configuration
+   */
+
+  /** @type {Props} */
+  let { config = {
     "name": "Stream",
     "file": "StreamPage",
     "mjpeg": "http://192.168.1.21/cgi-bin/mjpg/video.cgi?channel=0&subtype=1",
     "hls": "http://192.168.1.1:19000/memfs/a22dfe17-c714-459e-b2d5-7c252093d445.m3u8",
     "ws": "ws://192.168.1.1:9999"
-  }
+  } } = $props();
 
   // Variables
-  let wsPlayer
-  let hlsPlayer
+  let wsPlayer = $state()
+  let hlsPlayer = $state()
   onMount(() => {
     if (config.ws) wsStream(config.ws, wsPlayer)
     else if (config.hls) hslStream(config.hls, hlsPlayer)
@@ -45,7 +53,9 @@
   }
 
   // Debug
-  $: console.log("config", config)
+  run(() => {
+    console.log("config", config)
+  });
 
 </script>
 

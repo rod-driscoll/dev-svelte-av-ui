@@ -1,11 +1,24 @@
 <!-- Javascript -->
 <script>
+  import { run } from 'svelte/legacy';
+
   
   // Stores
   import { global } from '../js/global.js';
 
-  // Configuration
-  export let config = {
+  
+
+  // Components
+  import Icon from '../components/Icon.svelte'
+  import DpadComponent from '../components/Dpad.svelte'
+  import PresetComponent from '../components/Presets.svelte'
+  /**
+   * @typedef {Object} Props
+   * @property {any} [config] - Configuration
+   */
+
+  /** @type {Props} */
+  let { config = {
     "name": "Video Call",
     "file": "CameraPage",
     "shareListShow": true,
@@ -67,23 +80,18 @@
         }
       }
     ]
-  }
-
-  // Components
-  import Icon from '../components/Icon.svelte'
-  import DpadComponent from '../components/Dpad.svelte'
-  import PresetComponent from '../components/Presets.svelte'
+  } } = $props();
   
   // Variables
   let cameras = config.cameras
-  let cameraShared = cameras[0]
-  let cameraControlled = firstCameraWithControls(cameras)
+  let cameraShared = $state(cameras[0])
+  let cameraControlled = $state(firstCameraWithControls(cameras))
   let shareListShow = config.shareListShow
   let savePresetHoldTime_sec = config.savePresetHoldTime_sec
-  let presetSaved = 0
+  let presetSaved = $state(0)
 
   // Dynamic Variables
-  $: controls = cameraControlled.controls || {
+  let controls = $derived(cameraControlled.controls || {
     "show": false,
     "bottomLeft": {
       "show": false
@@ -91,9 +99,9 @@
     "bottomRight": {
       "show": false
     }
-  }
-  $: bottomLeft = controls.bottomLeft || {show: false}
-  $: bottomRight = controls.bottomRight || {show: false}
+  })
+  let bottomLeft = $derived(controls.bottomLeft || {show: false})
+  let bottomRight = $derived(controls.bottomRight || {show: false})
 
   // Functions
   function firstCameraWithControls(cameras) {
@@ -147,10 +155,18 @@
   }
 
   // Debug
-  $: console.log("cameras", cameras)
-  $: console.log("cameraShared", cameraShared)
-  $: console.log("cameraControlled", cameraControlled)
-  $: console.log("presetSaved", presetSaved)
+  run(() => {
+    console.log("cameras", cameras)
+  });
+  run(() => {
+    console.log("cameraShared", cameraShared)
+  });
+  run(() => {
+    console.log("cameraControlled", cameraControlled)
+  });
+  run(() => {
+    console.log("presetSaved", presetSaved)
+  });
 
 </script>
 
@@ -167,7 +183,7 @@
         {#each cameras as camera}
           <button
             class:selected={cameraShared.id === camera.id}
-            on:click={() => setShareCamera(camera.id)}
+            onclick={() => setShareCamera(camera.id)}
           >
             <Icon name="videocam" size=2 />
             {camera.name}
@@ -183,7 +199,7 @@
         {#if camera.controls?.show}
           <button
             class:selected={cameraControlled.id === camera.id}
-            on:click={() => setControlCamera(camera.id)}
+            onclick={() => setControlCamera(camera.id)}
           >
             <Icon name="videocam" size=2 />
             {camera.name}

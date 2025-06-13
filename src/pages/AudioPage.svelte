@@ -1,5 +1,7 @@
 <!-- Javascript -->
 <script>
+  import { run } from 'svelte/legacy';
+
 
   // Imports
   import { global } from '../js/global.js';
@@ -11,8 +13,14 @@
   import Mute from "../components/Mute.svelte";
   import Slider from "../components/Slider.svelte";
 
-  // Configuration
-  export let config = {
+  
+  /**
+   * @typedef {Object} Props
+   * @property {any} [config] - Configuration
+   */
+
+  /** @type {Props} */
+  let { config = {
     "name": "Audio",
     "file": "AudioPage",
     "simplSubscriptionID": "AudioPage",
@@ -51,11 +59,11 @@
         "type": "mute"
       }
     ]
-  }
+  } } = $props();
 
   // Variables
   let editMode = $global.url.search.edit === "true"
-  let volumes = config.volumes
+  let volumes = $state(config.volumes)
 
   // Functions
   function mutePress(volume) {
@@ -80,7 +88,9 @@
   })
 
   // Debug
-  $: console.log("AudioPage config", config)
+  run(() => {
+    console.log("AudioPage config", config)
+  });
   // $: console.log("volumes", volumes)
 
 </script>

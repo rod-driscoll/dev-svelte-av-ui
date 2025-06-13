@@ -1,11 +1,22 @@
 <!-- Javascript -->
 <script>
+  import { run } from 'svelte/legacy';
+
 
   // Stores
   import { global, getJSON } from '../js/global.js';
 
-  // Configuration
-  export let config = {
+  
+
+  // Components
+  import Keypad from '../components/Keypad.svelte'
+  /**
+   * @typedef {Object} Props
+   * @property {any} [config] - Configuration
+   */
+
+  /** @type {Props} */
+  let { config = {
     "name": "Passcode",
     "file": "PasscodePage",
     "heading": "Enter code to continue...",
@@ -19,14 +30,12 @@
         "configFile": "examples/small.json",
       }
     ]
-  }
-
-  // Components
-  import Keypad from '../components/Keypad.svelte'
+  } } = $props();
 
   // Variables
   let passcodes = config.passcodes
-  $: textFeedback = ""
+  let textFeedback = $state("");
+  
 
   // Functions
   function confirmRoomState(configFilePath) {
@@ -81,7 +90,9 @@
   }
 
   // Debug
-  $: console.log("config", config)
+  run(() => {
+    console.log("config", config)
+  });
 
 </script>
 

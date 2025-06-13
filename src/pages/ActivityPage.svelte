@@ -1,5 +1,7 @@
 <!-- Javascript -->
 <script>
+  import { run } from 'svelte/legacy';
+
 
   // Imports
   import { global } from '../js/global.js';
@@ -10,8 +12,14 @@
   import Loading from '../components/Loading.svelte'
   import Activity from '../components/Activity.svelte'
 
-  // Configuration
-  export let config = {
+  
+  /**
+   * @typedef {Object} Props
+   * @property {any} [config] - Configuration
+   */
+
+  /** @type {Props} */
+  let { config = {
     "name": "Home",
     "file": "ActivityPage",
     "simplSubscriptionID": "ActivityPage",
@@ -51,7 +59,7 @@
         "color": "purple"
       }
     ]
-  }
+  } } = $props();
 
   // Variables
   let heading = config.heading
@@ -80,7 +88,9 @@
   }
 
   // Debug
-  $: console.log("ActivityPage activities", activities)
+  run(() => {
+    console.log("ActivityPage activities", activities)
+  });
 
 </script>
 
@@ -94,7 +104,7 @@
     {/each}
   </div>
   {#if show}
-    <button class="extraButton" on:click={pressLowerLeftButton}>
+    <button class="extraButton" onclick={pressLowerLeftButton}>
       {label}
       <Icon name={icon} size=2/>
     </button>

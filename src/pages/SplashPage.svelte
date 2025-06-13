@@ -4,15 +4,21 @@
   // Stores
   import { global } from '../js/global.js';
 
-  // Configuration
-  export let config = {
+  
+  /**
+   * @typedef {Object} Props
+   * @property {any} [config] - Configuration
+   */
+
+  /** @type {Props} */
+  let { config = {
     "name": "Splash",
     "file": "SplashPage",
     "png": "images/FordAV_BlackBG_1920_1080.png",
     "backgroundColor": "#000000",
     "page": "home",
     "popup": "passcode",
-  }
+  } } = $props();
 
   // Functions
   function close() {
@@ -22,15 +28,15 @@
 
   let page = config.page || $global.config.topBar.homePage
   let popup = config.popup || ""
-  let timeout
+  let timeout = $state()
 
 </script>
 
 <!-- HTML -->
 <section 
-  on:click={close}
-  on:pointerup={() => clearTimeout(timeout)}
-  on:pointerdown={() => timeout = setTimeout(() => location.reload(true), 1000)}
+  onclick={close}
+  onpointerup={() => clearTimeout(timeout)}
+  onpointerdown={() => timeout = setTimeout(() => location.reload(true), 1000)}
   class="fixed"
   style="background-color: {config.backgroundColor};"
 >

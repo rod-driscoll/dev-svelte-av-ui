@@ -12,10 +12,16 @@
     { id: 5, name: "5" },
     { id: 6, name: "6" },
   ]
-  let timeout
-  export let savePresetHoldTime_sec = 2
-  export let saved = false
-  export let selected = 0
+  let timeout = $state()
+  /**
+   * @typedef {Object} Props
+   * @property {number} [savePresetHoldTime_sec]
+   * @property {boolean} [saved]
+   * @property {number} [selected]
+   */
+
+  /** @type {Props} */
+  let { savePresetHoldTime_sec = 2, saved = $bindable(false), selected = $bindable(0) } = $props();
 </script>
 
 <!-- HTML -->
@@ -24,14 +30,14 @@
   {#each presets as preset}
     <button
       class:selected={selected === preset.id}
-      on:pointerup={ () => {
+      onpointerup={() => {
         clearTimeout(timeout)
         if (!saved) {
           dispatch('recall', preset.id)
           selected = preset.id
         }
       }}
-      on:pointerdown={ () => {
+      onpointerdown={() => {
         saved = false
         timeout = setTimeout(() => {
           dispatch('save', preset.id)

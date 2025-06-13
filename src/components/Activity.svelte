@@ -1,18 +1,35 @@
 <!-- Javascript -->
 <script>
+  import { createBubbler } from 'svelte/legacy';
+
+  const bubble = createBubbler();
   import Icon from './Icon.svelte'
 
-  // Exports
-  export let id = 0
-  export let name = "Activity"
-  export let icon = "star"
-  export let color = "grey"
-  export let file = ""
-  export let page = ""
-  export let popup = ""
+  
 
   // Stores
   import { global } from '../js/global.js';
+  /**
+   * @typedef {Object} Props
+   * @property {number} [id] - Exports
+   * @property {string} [name]
+   * @property {string} [icon]
+   * @property {string} [color]
+   * @property {string} [file]
+   * @property {string} [page]
+   * @property {string} [popup]
+   */
+
+  /** @type {Props} */
+  let {
+    id = 0,
+    name = "Activity",
+    icon = "star",
+    color = "grey",
+    file = "",
+    page = "",
+    popup = ""
+  } = $props();
   let editMode = $global.url.search.edit === "true"
 
 </script>
@@ -20,7 +37,7 @@
 <!-- HTML -->
 <button
   id="activity-{id}"
-  on:click
+  onclick={bubble('click')}
   style="
     color: var(--color-text-{color});
     background-color: var(--color-bg-{color});

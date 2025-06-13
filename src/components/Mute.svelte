@@ -8,16 +8,22 @@
   // Imports
   import Icon from "./Icon.svelte";
 
-  // Export
-  export let icon = "mic_off"
-  export let muted = false
+  
+  /**
+   * @typedef {Object} Props
+   * @property {string} [icon] - Export
+   * @property {boolean} [muted]
+   */
+
+  /** @type {Props} */
+  let { icon = "mic_off", muted = false } = $props();
 
 </script>
 
 <!-- HTML -->
 <button 
   class:muted={muted}
-  on:click={() => dispatch('mute', muted)}
+  onclick={() => dispatch('mute', muted)}
 >
   <Icon name={icon}/>
 </button>

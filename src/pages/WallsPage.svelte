@@ -1,5 +1,7 @@
 <!-- Javascript -->
 <script>
+  import { run } from 'svelte/legacy';
+
 
   // Stores
   import { global, getJSON } from '../js/global.js'
@@ -7,8 +9,14 @@
   // Components
   import Icon from '../components/Icon.svelte'
 
-  // Configuration
-  export let config = {
+  
+  /**
+   * @typedef {Object} Props
+   * @property {any} [config] - Configuration
+   */
+
+  /** @type {Props} */
+  let { config = {
     "name": "Room Combining",
     "file": "WallsPage",
     "roomName": "A",
@@ -58,13 +66,13 @@
         "roomNames": [ "A", "B", "C" ]
       }
     ]
-  }
+  } } = $props();
 
   // Variables
   let roomName = config.roomName
   let rooms = config.rooms
   let roomStates = config.roomStates
-  let walls = config.walls
+  let walls = $state(config.walls)
   let wallSensor = config.wallSensor
 
   // Functions
@@ -115,9 +123,9 @@
   }
 
   // Dynamic Variables
-  $: currentState = getCurrentState(walls)
-  $: confimButtonText = `Confirm room state is ${currentState.name}`
-  $: connectedRoom = (room) => {
+  let currentState = $derived(getCurrentState(walls))
+  let confimButtonText = $derived(`Confirm room state is ${currentState.name}`)
+  let connectedRoom = $derived((room) => {
     let isConnectedRoom = false
     roomStates.forEach(state => {
       if (arrayEquals(walls, state.walls)) {
@@ -127,11 +135,15 @@
       }
     })
     return isConnectedRoom
-  }
+  })
 
   // Debug
-  $: console.log("roomStates", roomStates)
-  $: console.log("currentState", currentState)
+  run(() => {
+    console.log("roomStates", roomStates)
+  });
+  run(() => {
+    console.log("currentState", currentState)
+  });
 
 </script>
 
@@ -168,7 +180,7 @@
           {:else}
             <button 
               class:noWall={!walls[index]}
-              on:click={() => wallClick(index)}
+              onclick={() => wallClick(index)}
             >
               {#if walls[index]}
                 <span><Icon name="close"/></span>
@@ -184,7 +196,7 @@
   </div>
   <button 
     class="confirm"
-    on:click={() => confirmRoomState()}
+    onclick={() => confirmRoomState()}
   >
     {confimButtonText}
   </button>
