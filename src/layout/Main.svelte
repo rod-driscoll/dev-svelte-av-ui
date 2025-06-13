@@ -29,7 +29,7 @@
 
   // Dynamic Variables
   let editMode = $global.url.search.edit === "true"
-  $: hasSubpages = actConfig.hasOwnProperty('subpages')
+  $: hasSubpages = activePageConfig.hasOwnProperty('subpages')
   $: activeSubpageName = hasSubpages ? activePageConfig.subpages[0] : ""
   $: activeSubpageConfig = $global.config.pages[activeSubpageName]
   $: activeSubpageFiles = getSubpageFiles(hasSubpages, activePageConfig)
