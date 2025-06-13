@@ -1,9 +1,11 @@
 <!-- @migration-task Error while migrating Svelte code: $$props is used together with named props in a way that cannot be automatically migrated. -->
 <!-- Javascript -->
 <script>
-  export let fill = true
-  export let name = "star"
-  export let size = 1
+  let {
+    fill = true,
+    name = "star",
+    size = 1
+  } = $props();
 </script>
 
 <!-- HTML -->

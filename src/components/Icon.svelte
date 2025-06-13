@@ -11,15 +11,19 @@ https://svelte.dev/e/attribute_invalid_event_handler -->
 <script>
 
   // Exports
-  export let size = 1
-  export let width = undefined
-  export let height = undefined
-  export let color = "currentColor"
-  export let inline = false
+  let { 
+    size = 1,
+    width = undefined,
+    height = undefined,
+    color = "currentColor",
+    inline = false,
+    // SVG
+    svgPath = undefined,
+    name = undefined, // same as material_symbols    
+    // Image
+    imagePath = undefined
+  } = $props();
 
-  // SVG
-  export let svgPath = undefined
-  export let name = undefined // same as material_symbols
   let svgUsed = svgPath || name
   // If "name" prop was used update the svgPath
   if (name) svgPath = `./svgs/material_symbols/${name.toLowerCase()}`
@@ -28,8 +32,6 @@ https://svelte.dev/e/attribute_invalid_event_handler -->
   // Add ".svg" to the end of the svgPath is it isn't there already
   if (svgUsed && !svgPath.endsWith(".svg")) svgPath += ".svg"
   
-  // Image
-  export let imagePath = undefined
   let imageUsed = imagePath
 
 </script>

@@ -6,7 +6,8 @@
   import { global } from '../js/global.js';
 
   // Configuration
-  export let config = {
+  let {
+    config = {
     "show": true,
     "homePage": "activities",
     "powerPage": "system off",
@@ -55,13 +56,14 @@
       ]
     }
   }
+ } = $props();
 
   // Components 
   import Icon from '../components/Icon.svelte'
 
   // Variables
-  $: title = $global.config.pages[$global.router.page].name || $global.config.pages[$global.router.page].subpages
-  $: file = $global.config.pages[$global.router.page].file || "..."
+  let title = $derived($global.config.pages[$global.router.page].name || $global.config.pages[$global.router.page].subpages);
+  let file = $derived($global.config.pages[$global.router.page].file || "...");
   let editMode = $global.url.search.edit === "true"
   let timeout
   let show = config.show

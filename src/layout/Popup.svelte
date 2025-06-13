@@ -10,15 +10,15 @@
   import Icon from '../components/Icon.svelte'
   
   // Exports
-  export let pageFiles
-  export let activePopupFile
-  export let activePopupConfig
-  export let closeIcon = true
+  let {
+    pageFiles,
+    activePopupFile,
+    activePopupConfig,
+    closeIcon = true,
+    // Functions
+    close = () => { $global.router.popup = "" }
+  } = $props();
 
-  // Functions
-  export function close() {
-    $global.router.popup = ""
-  }
   function closeIfBackground(event) {
     if (event.target.localName === 'dialog') close()
   }
@@ -40,10 +40,10 @@
   let timeout
   let fadeTime = 100
   let editMode = $global.url.search.edit === "true"
-  $: hasSubpages = activePopupConfig?.hasOwnProperty('subpages')
-  $: activeSubpageName = hasSubpages ? activePopupConfig.subpages[0] : ""
-  $: activeSubpageConfig = $global.config.pages[activeSubpageName]
-  $: activeSubpageFiles = getSubpageFiles(hasSubpages, activePopupConfig)
+  let hasSubpages = $derived(activePopupConfig?.hasOwnProperty('subpages'));
+  let activeSubpageName = $derived(hasSubpages ? activePopupConfig.subpages[0] : "");
+  let activeSubpageConfig = $derived($global.config.pages[activeSubpageName]);
+  let activeSubpageFiles = $derived(getSubpageFiles(hasSubpages, activePopupConfig));
 
 </script>
 
