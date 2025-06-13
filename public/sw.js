@@ -11,7 +11,10 @@ self.addEventListener('install', function(event) {
 self.addEventListener('fetch', function(event) {
   event.respondWith(
     fetch(event.request).catch(function() {
-      return caches.match(event.request)
+      return caches.match(event.request).then(function(response) {
+        // Return cached response if found, otherwise a fallback Response
+        return response || new Response('Offline', { status: 503, statusText: 'Service Unavailable' });
+      });
     })
-  )
-})
+  );
+});
